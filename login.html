@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="senha" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <div id="mensagem"></div>
+        <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const mensagemDiv = document.getElementById('mensagem');
+            mensagemDiv.innerHTML = '<div class="loading">Processando...</div>';
+
+            try {
+                const response = await fetch('index.php?rota=login', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.sucesso) {
+                    throw new Error(data.mensagem || 'Erro no login');
+                }
+
+                mensagemDiv.innerHTML = `
+                    <div class="alert success">
+                        Login bem-sucedido! Redirecionando...
+                    </div>
+                `;
+
+                localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                setTimeout(() => {
+                    window.location.href = 'postagens.html';
+                }, 1500);
+            } catch (error) {
+                mensagemDiv.innerHTML = `
+                    <div class="alert error">
+                        Erro: ${error.message}
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Postagem</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Detalhes da Postagem</h1>
+            <a href="postagens.html" class="btn-voltar">Voltar</a>
+        </header>
+
+        <div id="postagem-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const usuario = JSON.parse(localStorage.getItem('usuario'));
+            if (!usuario) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+
+            if (postId) {
+                carregarPostagem(postId);
+            } else {
+                window.location.href = 'postagens.html';
+            }
+        });
+
+        async function carregarPostagem(id) {
+            try {
+                const response = await fetch(`index.php?rota=postagem&id=${id}`);
+                const postagem = await response.json();
+
+                const container = document.getElementById('postagem-container');
+                container.innerHTML = `
+                    <article class="postagem-detalhe">
+                        <h2>${postagem.titulo}</h2>
+                        <div class="conteudo">${postagem.conteudo}</div>
+                        <div class="meta">
+                            <span>Autor: ${postagem.autor}</span>
+                            <span>Data: ${new Date(postagem.created_at).toLocaleString()}</span>
+                        </div>
+                    </article>
+                `;
+            } catch (error) {
+                console.error('Erro ao carregar postagem:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>

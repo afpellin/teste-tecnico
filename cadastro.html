@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Cadastro</h1>
+        <form id="cadastroForm">
+            <input type="text" name="nome" placeholder="Nome" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="senha" placeholder="Senha" required>
+            <button type="submit">Cadastrar</button>
+        </form>
+        <div id="mensagem"></div>
+        <p>Já possui uma conta? <a href="login.html">Faça login</a></p>
+    </div>
+
+    <script>
+        document.getElementById('cadastroForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const mensagemDiv = document.getElementById('mensagem');
+            mensagemDiv.innerHTML = '<div class="loading">Processando...</div>';
+
+            try {
+                const formData = new FormData(this);
+                const response = await fetch('index.php?rota=cadastro', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.mensagem || 'Erro no cadastro');
+                }
+
+                mensagemDiv.innerHTML = `
+                    <div class="alert success">
+                        ${data.mensagem}
+                    </div>
+                `;
+
+                if (data.sucesso) {
+                    setTimeout(() => window.location.href = 'login.html', 1500);
+                }
+            } catch (error) {
+                mensagemDiv.innerHTML = `
+                    <div class="alert error">
+                        Erro: ${error.message}
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>
