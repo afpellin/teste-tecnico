@@ -1,4 +1,4 @@
-Teste Técnico — Desenvolvedor PHP Júnior: Sistema de Postagens Sistema web completo para gerenciamento de postagens, incluindo autenticação de usuários, CRUD (Create, Read, Update, Delete) de postagens e interface responsiva.
+Teste Técnico Desenvolvedor PHP Júnior: Sistema de Postagens Sistema web completo para gerenciamento de postagens, incluindo autenticação de usuários, CRUD (Create, Read, Update, Delete) de postagens e interface responsiva.
 
 Tecnologias Utilizadas PHP 8.2
 
@@ -42,4 +42,4 @@ Views/ – Templates e arquivos de apresentação
 
 tests/ – Testes unitários com PHPUnit
 
-Contribuições são bem-vindas!!!
+Contribuições são muito bem-vindas! Em caso de dúvidas, fique à vontade para entrar em contato.
